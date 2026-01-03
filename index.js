@@ -1,20 +1,18 @@
 /*
-⚠️ PERINGATAN:
-Script ini **TIDAK BOLEH DIPERJUALBELIKAN** dalam bentuk apa pun!
-
 ╔══════════════════════════════════════════════╗
-║               🛠️ INFORMASI SCRIPT            ║
+║ ⚠️  PERINGATAN PENTING                       ║
+║ ❌ Script ini TIDAK BOLEH DIPERJUALBELIKAN!  ║
 ╠══════════════════════════════════════════════╣
-║ 📦 Version   : 1.0
-║ 👨‍💻 Developer : AbuZy Creative               ║
-║ 🌐 Website   :t.me/abuzycreative            ║
-║ 💻 GitHub    : github.com/PrabuSA123/       ║
+║ 🛠️ Version   : 1.0                           ║
+║ 👨‍💻 Developer : AbuZy Creative                ║
+║ 🌐 Website   : t.me/abuzycreative            ║
+║ 💻 GitHub    : github.com/PrabuSA123/        ║
+╠══════════════════════════════════════════════╣
+║ 📌 Open Source mulai 3 Januari 2026          ║
+║ 🔗 Bisa digunakan GRATIS & untuk edukasi     ║
 ╚══════════════════════════════════════════════╝
-
-📌 Mulai 3 Januari 2026,
-Script **CPANEL BY ABUZY** resmi menjadi **Open Source** dan dapat digunakan secara gratis:
-🔗 t.me/abuzycreative
 */
+
 
 const TelegramBot = require('node-telegram-bot-api');
 const axios = require('axios');
@@ -3848,3 +3846,4 @@ Dibuat oleh: ${msg.from.first_name || msg.from.username}
 //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰//
 
 //          CLOSE CREATE PANEL         //// 
+
