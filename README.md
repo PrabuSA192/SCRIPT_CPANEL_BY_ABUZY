@@ -1,2 +1,0 @@
-# scriptcpanelbyabuzy
-NO DIJUAL
