@@ -910,13 +910,24 @@ bot.onText(/\/gopay/, (msg) => {
 bot.onText(/\/qris/, (msg) => {
     const chatId = msg.chat.id;
 
-    const files = fs.readdirSync(settings.qris_folder);
-    if (files.length === 0) 
-        return bot.sendMessage(chatId, "Folder QRIS kosong 😢");
+    try {
+        if (!fs.existsSync(settings.qris_folder)) {
+            return bot.sendMessage(chatId, "❌ Folder QRIS tidak ditemukan!");
+        }
 
-    const filePath = path.join(settings.qris_folder, files[0]);
+        const files = fs.readdirSync(settings.qris_folder);
+        const imageFiles = files.filter(file => {
+            const ext = path.extname(file).toLowerCase();
+            return ['.jpg', '.jpeg', '.png', '.gif'].includes(ext);
+        });
 
-    const captionText = `
+        if (imageFiles.length === 0) {
+            return bot.sendMessage(chatId, "❌ Tidak ada gambar QRIS di folder!");
+        }
+
+        const filePath = path.join(settings.qris_folder, imageFiles[0]);
+
+        const captionText = `
 💳 <b>PAYMENT VIA QRIS</b>
 ┏━━━━━━━━━━━━━━┓
 │ Scan QRIS ini untuk membayar
@@ -927,22 +938,24 @@ bot.onText(/\/qris/, (msg) => {
 ┗━━━━━━━━━━━━━━┛
 `;
 
-    const keyboard = {
-        reply_markup: {
-            inline_keyboard: [
-                [
-                    { text: '📺 CHANNEL', url: 'https://t.me/abuzytesti' },
-                    { text: '👤 OWNER', url: 'https://t.me/abuzycreative' }
+        // Kirim langsung dengan path (tanpa createReadStream)
+        bot.sendPhoto(chatId, filePath, {
+            caption: captionText,
+            parse_mode: 'HTML',
+            reply_markup: {
+                inline_keyboard: [
+                    [
+                        { text: '📺 CHANNEL', url: 'https://t.me/abuzytesti' },
+                        { text: '👤 OWNER', url: 'https://t.me/abuzycreative' }
+                    ]
                 ]
-            ]
-        }
-    };
+            }
+        });
 
-    bot.sendPhoto(chatId, fs.createReadStream(filePath), {
-        caption: captionText,
-        parse_mode: 'HTML',
-        reply_markup: keyboard
-    });
+    } catch (err) {
+        console.error('Error loading QRIS:', err);
+        bot.sendMessage(chatId, '❌ Gagal memuat QRIS. Hubungi owner!');
+    }
 });
 //          PENUTUP PAYMENT          //
 //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰//
