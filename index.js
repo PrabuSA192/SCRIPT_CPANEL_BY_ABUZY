@@ -79,6 +79,8 @@ bot.onText(/\/start/, (msg) => {
 │ 📌 /listcpanel  - Lihat list panel
 │ 📌 /ownermenu   - Menu Owner
 │ 📌 /payment     - Info Pembayaran
+│ 📌 /ping        - Cek respons bot
+│ 📌 /vpsinfo     - Cek spesifikasi VPS
 │
 ┗━━━━━━━━━━━━━━━━━━━┛
 `;
@@ -466,6 +468,55 @@ bot.onText(/\/kick (\d+)/, async (msg, match) => {
     }
 });
 
+// ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰//
+//    CEK VPS SPEC MENU     //
+bot.onText(/\/vpsinfo/, async (msg) => {
+    const chatId = msg.chat.id;
+    
+    try {
+        const os = require('os');
+        
+        // CPU Info
+        const cpus = os.cpus();
+        const cpuCore = cpus.length;
+        const cpuModel = cpus[0].model;
+        
+        // RAM Info
+        const ramTotal = Math.round(os.totalmem() / 1024 / 1024); // MB
+        const freeRAM = Math.round(os.freemem() / 1024 / 1024); // MB
+        const ramUsed = ramTotal - freeRAM;
+        
+        // System Info
+        const platform = os.platform();
+        const release = os.release();
+        const hostname = os.hostname();
+        
+        // Uptime
+        const uptimeSeconds = os.uptime();
+        const days = Math.floor(uptimeSeconds / 86400);
+        const hours = Math.floor((uptimeSeconds % 86400) / 3600);
+        const minutes = Math.floor((uptimeSeconds % 3600) / 60);
+        const uptime = `${days}d ${hours}h ${minutes}m`;
+
+        const message = `🖥️ *LIVE VPS SPEC*
+━━━━━━━━━━━━━━━
+🧠 *CPU Core* : ${cpuCore}
+⚙️ *CPU Model* : ${cpuModel}
+💾 *RAM* : ${ramUsed}/${ramTotal} MB
+🖥️ *OS* : ${platform} ${release}
+🏷️ *Host* : ${hostname}
+⏱️ *Uptime* : ${uptime}
+⚠️ _Data dari environment container_`;
+
+        bot.sendMessage(chatId, message, { parse_mode: 'Markdown' });
+
+    } catch (err) {
+        console.error('Error getting specs:', err);
+        bot.sendMessage(chatId, '❌ Gagal mengambil informasi VPS');
+    }
+});
+
+
 
 
 //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰//
@@ -507,7 +558,7 @@ bot.onText(/\/ping/, async (msg) => {
     const chatId = msg.chat.id;
 
     const start = Date.now();
-    const sent = await bot.sendMessage(chatId, '🏓 Pong...');
+    const sent = await bot.sendMessage(chatId, '🏓 Ping...');
     const delay = Date.now() - start;
 
     let status;
@@ -520,7 +571,7 @@ bot.onText(/\/ping/, async (msg) => {
     }
 
     const text = `
-🏓 <b>PONG</b>
+🏓 <b>PiNG</b>
 
 ⏱ Delay : <code>${delay} ms</code>
 📊 Status: ${status}
