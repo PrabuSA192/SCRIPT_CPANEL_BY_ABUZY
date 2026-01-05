@@ -107,7 +107,7 @@ bot.onText(/^\/addprem(?:\s+(.+))?$/, (msg, match) => {
     const chatId = msg.chat.id;
     const userId = msg.from.id;
 
-    if (userId.toString() !== owner) {
+    if (!isOwner(userId)) {
         return bot.sendMessage(chatId, '❌ Only owner can perform this action.');
     }
 
@@ -116,8 +116,18 @@ bot.onText(/^\/addprem(?:\s+(.+))?$/, (msg, match) => {
         return bot.sendMessage(chatId, 
             `❌ Format salah!\n\n` +
             `📝 Contoh:\n` +
-            `/addprem idtelegram`
+            `/addprem 123456789`
         );
+    }
+
+    // Validasi apakah input adalah angka (ID Telegram)
+    if (!/^\d+$/.test(targetUserId)) {
+        return bot.sendMessage(chatId, '❌ ID Telegram harus berupa angka!');
+    }
+
+    // Validasi panjang ID (biasanya 5-15 digit)
+    if (targetUserId.length < 5 || targetUserId.length > 15) {
+        return bot.sendMessage(chatId, '❌ ID Telegram tidak valid! (5-15 digit)');
     }
 
     if (!fs.existsSync(premiumUsersFile)) {
@@ -143,7 +153,7 @@ bot.onText(/^\/delprem(?:\s+(.+))?$/, (msg, match) => {
     const chatId = msg.chat.id;
     const userId = msg.from.id;
 
-    if (userId.toString() !== owner) {
+    if (!isOwner(userId)) {
         return bot.sendMessage(chatId, '❌ Only owner can perform this action.');
     }
 
@@ -152,8 +162,18 @@ bot.onText(/^\/delprem(?:\s+(.+))?$/, (msg, match) => {
         return bot.sendMessage(chatId, 
             `❌ Format salah!\n\n` +
             `📝 Contoh:\n` +
-            `/delprem idtelegram`
+            `/delprem 123456789`
         );
+    }
+
+    // Validasi apakah input adalah angka (ID Telegram)
+    if (!/^\d+$/.test(targetUserId)) {
+        return bot.sendMessage(chatId, '❌ ID Telegram harus berupa angka!');
+    }
+
+    // Validasi panjang ID (biasanya 5-15 digit)
+    if (targetUserId.length < 5 || targetUserId.length > 15) {
+        return bot.sendMessage(chatId, '❌ ID Telegram tidak valid! (5-15 digit)');
     }
 
     if (!fs.existsSync(premiumUsersFile)) {
@@ -213,6 +233,16 @@ bot.onText(/^\/addowner(?:\s+(.+))?$/, (msg, match) => {
         );
     }
 
+    // Validasi apakah input adalah angka (ID Telegram)
+    if (!/^\d+$/.test(targetUserId)) {
+        return bot.sendMessage(chatId, '❌ ID Telegram harus berupa angka!');
+    }
+
+    // Validasi panjang ID (biasanya 8-10 digit)
+    if (targetUserId.length < 5 || targetUserId.length > 15) {
+        return bot.sendMessage(chatId, '❌ ID Telegram tidak valid! (5-15 digit)');
+    }
+
     if (!fs.existsSync(adminfile)) {
         fs.writeFileSync(adminfile, JSON.stringify([owner]));
     }
@@ -259,6 +289,16 @@ bot.onText(/^\/delowner(?:\s+(.+))?$/, (msg, match) => {
         );
     }
 
+    // Validasi apakah input adalah angka (ID Telegram)
+    if (!/^\d+$/.test(targetUserId)) {
+        return bot.sendMessage(chatId, '❌ ID Telegram harus berupa angka!');
+    }
+
+    // Validasi panjang ID (biasanya 5-15 digit)
+    if (targetUserId.length < 5 || targetUserId.length > 15) {
+        return bot.sendMessage(chatId, '❌ ID Telegram tidak valid! (5-15 digit)');
+    }
+
     if (targetUserId === owner) {
         return bot.sendMessage(chatId, '❌ Tidak bisa hapus main owner dari settings!');
     }
@@ -295,38 +335,85 @@ bot.onText(/^\/delowner(?:\s+(.+))?$/, (msg, match) => {
     bot.sendMessage(chatId, `✅ User ${targetUserId} berhasil dihapus dari owner!`);
 });
 
+// ====================
+// COMMAND: /listowner
+// ====================
+bot.onText(/^\/listowner$/, (msg) => {
+    const chatId = msg.chat.id;
+    const userId = msg.from.id;
+
+    if (!isOwner(userId)) {
+        return bot.sendMessage(chatId, '❌ Only owner can perform this action.');
+    }
+
+    if (!fs.existsSync(adminfile)) {
+        fs.writeFileSync(adminfile, JSON.stringify([owner]));
+    }
+
+    let data = JSON.parse(fs.readFileSync(adminfile));
+    let owners = [];
+    
+    // Cek format file
+    if (Array.isArray(data)) {
+        // Format lama (array)
+        owners = data;
+    } else {
+        // Format baru (object)
+        owners = data.owners || [];
+    }
+
+    if (owners.length === 0) {
+        return bot.sendMessage(chatId, '📋 Tidak ada owner.');
+    }
+
+    let message = `👑 *OWNER LIST* (${owners.length})\n\n`;
+    
+    owners.forEach((id, index) => {
+        const isMainOwner = id === owner;
+        message += `${index + 1}. \`${id}\` ${isMainOwner ? 'OWNER BOT' : ''}\n`;
+    });
+
+    bot.sendMessage(chatId, message, { parse_mode: 'Markdown' });
+});
 
 //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰//
 //          OWNERMENU          //
 bot.onText(/\/ownermenu/, (msg) => {
-const chatId = msg.chat.id;
+    const chatId = msg.chat.id;
+    const userId = msg.from.id;
 
-   bot.sendMessage(chatId, 
+    // Validasi owner
+    if (!isOwner(userId)) {
+        return bot.sendMessage(chatId, '❌ Command ini hanya untuk owner!');
+    }
+
+    bot.sendMessage(chatId, 
 `👑 𝐌𝐄𝐍𝐔 𝐎𝐖𝐍𝐄𝐑 👑
 
 ┏━━━🛠 𝐀𝐂𝐓𝐈𝐎𝐍 ━━━┓
-│ ➤ /addowner  - Tambah admin
-│ ➤ /listadmin  - Lihat daftar admin
-│ ➤ /addprem    - Tambah premium user
-│ ➤ /delowner   - Hapus admin
-│ ➤ /delprem    - Hapus premium user
-│ ➤ /listsrv    - Lihat server aktif
-│ ➤ /listusr    - Lihat daftar user
-│ ➤ /delsrv     - Hapus server
-│ ➤ /delusr     - Hapus user
+│ ➤ /addowner  - Tambah owner
+│ ➤ /delowner  - Hapus owner
+│ ➤ /listowner - Lihat daftar owner
+│ ➤ /addprem   - Tambah premium user
+│ ➤ /delprem   - Hapus premium user
+│ ➤ /listprem  - Lihat daftar premium
+│ ➤ /listsrv   - Lihat server aktif
+│ ➤ /listusr   - Lihat daftar user
+│ ➤ /delsrv    - Hapus server
+│ ➤ /delusr    - Hapus user
 ┗━━━━━━━━━━━━━━━━━┛`, 
-{
-    parse_mode: 'HTML',
-    reply_markup: {
-        inline_keyboard: [
-            [
-                { text: '📺 CHANNEL', url: 'https://t.me/abuzytesti' },
-                { text: '👤 OWNER', url: 'https://t.me/abuzycreative' }
+    {
+        parse_mode: 'HTML',
+        reply_markup: {
+            inline_keyboard: [
+                [
+                    { text: '📺 CHANNEL', url: 'https://t.me/abuzytesti' },
+                    { text: '👤 OWNER', url: 'https://t.me/abuzycreative' }
+                ]
             ]
-        ]
-    }
-  });
-})
+        }
+    });
+});
 
 // ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰//
 //        LIST CREATE PANEL        //
