@@ -3,7 +3,7 @@
 ║ ⚠️  PERINGATAN PENTING                       ║
 ║ ❌ Script ini TIDAK BOLEH DIPERJUALBELIKAN!  ║
 ╠══════════════════════════════════════════════╣
-║ 🛠️ Version   : 1.0                           ║
+║ 🛠️ Version   : 2.0                           ║
 ║ 👨‍💻 Developer : AbuZy Creative                ║
 ║ 🌐 Website   : t.me/abuzycreative            ║
 ║ 💻 GitHub    : github.com/PrabuSA123/        ║
@@ -29,3 +29,4 @@ const setinggs = {
 };
 
 module.exports = setinggs;
+
