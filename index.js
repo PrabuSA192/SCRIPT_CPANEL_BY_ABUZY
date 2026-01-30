@@ -6,7 +6,7 @@
 ║ 🛠️ Version   : 2.0                           ║
 ║ 👨‍💻 Developer : AbuZy Creative                ║
 ║ 🌐 Website   : t.me/abuzycreative            ║
-║ 💻 GitHub    : github.com/PrabuSA123/        ║
+║ 💻 GitHub    : github.com/PrabuSA192/        ║
 ╠══════════════════════════════════════════════╣
 ║ 📌 Open Source mulai 3 Januari 2026          ║
 ║ 🔗 Bisa digunakan GRATIS & untuk edukasi     ║
@@ -88,7 +88,7 @@ async function showBotInfo() {
     console.log(`\n${chalk.yellow.bold("◧ Bot Information:")}`);
     console.log(`${chalk.green("Version      :")} 2.0`);
     console.log(`${chalk.green("Author       :")} AbuZy Creative`);
-    console.log(`${chalk.green("GitHub       :")} github.com/PrabuSA123`);
+    console.log(`${chalk.green("GitHub       :")} github.com/PrabuSA192`);
     console.log(`${chalk.green("Telegram     :")} t.me/abuzycreative`);
     console.log(`${chalk.green("Memory       :")} ${specs.usedMemory} / ${specs.totalMemory}`);
     console.log(`${chalk.green("Uptime       :")} ${specs.uptime}`);
@@ -4286,5 +4286,6 @@ Dibuat oleh: ${msg.from.first_name || msg.from.username}
 });
 //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰//
 //          CLOSE CREATE PANEL         //// 
+
 
 
