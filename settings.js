@@ -6,7 +6,7 @@
 ║ 🛠️ Version   : 2.0                           ║
 ║ 👨‍💻 Developer : AbuZy Creative                ║
 ║ 🌐 Website   : t.me/abuzycreative            ║
-║ 💻 GitHub    : github.com/PrabuSA123/        ║
+║ 💻 GitHub    : github.com/PrabuSA192/        ║
 ╠══════════════════════════════════════════════╣
 ║ 📌 Open Source mulai 3 Januari 2026          ║
 ║ 🔗 Bisa digunakan GRATIS & untuk edukasi     ║
@@ -29,4 +29,5 @@ const setinggs = {
 };
 
 module.exports = setinggs;
+
 
